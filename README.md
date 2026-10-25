@@ -1,12 +1,11 @@
 # MCP Bar
 
-DeepSeek Harness 的 MCP 管理插件。它把 MCP Server 的日常管理搬到了输入框上方：一条常驻状态栏，加上一个完整的管理面板。新建、启停、改配置、删条目、测连接、看工具，都不需要再改 `cordis.patch.yml` 或翻日志。
+DeepSeek Harness 的 MCP 管理插件。它在侧边栏提供一个完整的管理面板：新建、启停、改配置、删条目、测连接、看工具，都不需要再改 `cordis.patch.yml` 或翻日志。对话页不注入任何常驻 UI。
 
 MCP Bar 是独立插件，不依赖 `dsh-mcp-connector`。两者同时管理同名 Server 会重复注册工具，装了这个就可以卸掉那个。
 
 ## 能力
 
-- **状态栏**：输入框上方显示总数、已连接数、工具数；有异常或等待连接时用颜色提示。点击直接打开面板。
 - **服务器列表**：合并展示 MCP Bar 自己管理的 Server 和 profile 中已有的原生 `mcp-client` 条目，带状态圆点、传输方式、地址 / 命令、工具数。支持搜索、启停、编辑、删除。
 - **新建**：表单和 JSON 两种方式。表单覆盖名称、类型（stdio / Streamable HTTP）、超时、协议、命令与参数、URL 与请求头、环境变量、工作目录。JSON 兼容 `{"mcpServers": {...}}`、裸 map、单条对象和数组，以及 Claude / Cursor 风格的 `command + args`、`url`、`disabled`、`toolCallTimeoutMs` 字段。
 - **连接测试**：走 `initialize` → `notifications/initialized` → `tools/list`，支持 stdio（换行帧 / Content-Length 帧）与 Streamable HTTP（含 SSE 响应、分页、会话清理）。失败时区分协议、鉴权、HTTP、超时、网络与进程启动错误。
@@ -25,16 +24,16 @@ dsh plugin --profile <profile> add /path/to/dsh-mcp-bar
 # 或者直接编辑 profile 的 package.json，把 dsh-mcp-bar 加进 bundles
 ```
 
-插件声明了 `dsh.bundle.patch`，安装后插件自带的 `cordis.patch.yml` 会作为 bundle patch 参与 profile 组合。装完重启 DSH，输入框上方会出现 MCP 状态栏，侧边栏也会多一个「MCP 服务器」入口。
+插件声明了 `dsh.bundle.patch`，安装后插件自带的 `cordis.patch.yml` 会作为 bundle patch 参与 profile 组合。装完重启 DSH，侧边栏会多一个「MCP 服务器」入口。
 
 ## 使用
 
-点击状态栏或侧边栏打开面板：
+从侧边栏「MCP 服务器」打开面板：
 
 1. **新建** → 选「表单」或「JSON」。stdio 填命令与参数，HTTP 填 URL 与请求头；保存前可以先点「测试连接」确认能拿到工具。
 2. 列表里可以「停用 / 启用」。「停用」会把对应的动态条目标记为 disabled，工具从当前会话消失，但配置保留。
 3. 编辑保存后会自动重建条目并重新连接；如果目标暂时连不上，配置仍然保存，状态显示为异常，稍后可以重试。
-4. profile 中的原生 Server 会以「profile 配置」分组出现，可以一键接管到 MCP Bar 管理。
+4. profile 中的原生 Server 会以「profile 配置」分组出现，可以一键接管到 MCP Bar 管理。接管前它们只提供「接管 / 测试 / 详情」，因为插件不改写 `cordis.patch.yml`；接管成为 MCP Bar 记录后，启停、编辑、删除才可用。
 
 ## 配置落在哪些文件
 
@@ -107,7 +106,7 @@ lib/provision.js   动态 mcp-client 条目的增删改与原生条目接管
 lib/probe.js       stdio / Streamable HTTP 连接探测
 lib/store.js       storage domain（mcp_bar / servers）
 lib/web.js         同源 HTTP API 与信任 fence
-lib/client.js      浏览器半区：状态栏、面板、表单
+lib/client.js      浏览器半区：面板、表单
 scripts/           UI harness 与验收脚本
 test/              node:test 单元测试
 ```

@@ -190,8 +190,6 @@
 	function findController() {
 		const main = slots.entries("main")[0];
 		if (main?.options.inject) return main.options.inject().controller;
-		const dock = slots.entries("conversation.input.dock")[0];
-		if (dock?.options.inject) return dock.options.inject().controller;
 		return null;
 	}
 
@@ -239,21 +237,16 @@
 		);
 	}
 
-	function Conversation({ dockEntries }) {
+	function Conversation() {
 		return h("div", { className: "conversation" },
 			h("div", { className: "conv-head" },
 				h("h1", null, "下午好，Tanggang"),
 				h("p", null,
-					"这个页面是 MCP Bar 的视觉验收环境。输入框上方的状态栏来自 ",
-					h("code", null, "conversation.input.dock"),
-					"，点击即可打开完整的服务器管理面板。"
+					"这个页面是 MCP Bar 的视觉验收环境。对话页不注入任何常驻 UI，",
+					"管理面板从侧边栏「MCP 服务器」进入。"
 				)
 			),
 			h("div", { className: "composer" },
-				dockEntries.map((entry) => {
-					const props = entry.options.inject ? entry.options.inject() : {};
-					return h(entry.component, { key: entry.options.id ?? "dock", ...props });
-				}),
 				h("div", { className: "inputbar" },
 					h("span", { className: "inputbar-placeholder" }, "给 DeepSeek Harness 发消息…"),
 					h("span", { className: "inputbar-hint" }, "⌘ ↵"),
@@ -340,7 +333,6 @@
 		const controller = findController();
 		const state = useMcpState(controller);
 		const mainEntry = findMainEntry();
-		const dockEntries = slots.entries("conversation.input.dock");
 		const overlayEntries = slots.entries("shell.overlay");
 
 		return h(React.Fragment, null,
@@ -355,7 +347,7 @@
 								...(mainEntry.options.inject ? mainEntry.options.inject() : {})
 							})
 						)
-						: h(Conversation, { dockEntries })
+						: h(Conversation)
 				)
 			),
 			overlayEntries.map((entry) => {

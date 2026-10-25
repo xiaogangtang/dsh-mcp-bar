@@ -341,10 +341,9 @@ try {
 	const dock = await cdp.evaluate(`(async () => {
 		__MCP_UI__.showConversation();
 		await new Promise((done) => setTimeout(done, 60));
-		const text = document.querySelector(".mcpbar-dock")?.innerText ?? "";
-		return { text, hasDock: Boolean(document.querySelector(".mcpbar-dock")) };
+		return { hasDock: Boolean(document.querySelector(".mcpbar-dock")) };
 	})()`);
-	check('对话页状态栏显示汇总', dock.hasDock && /已连接/.test(dock.text), dock);
+	check('对话页不再注入状态栏', dock.hasDock === false, dock);
 
 	if (cdp.errors.length > 0) {
 		console.log('\n浏览器错误：');

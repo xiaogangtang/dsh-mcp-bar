@@ -171,7 +171,7 @@ async function main() {
 	await cdp.evaluate('__MCP_UI__.setTheme("light"); true');
 
 	await cdp.evaluate('__MCP_UI__.showConversation(); true');
-	await shot('03-conversation-dock');
+	await shot('03-conversation');
 
 	await cdp.evaluate('__MCP_UI__.openCreate("form"); true');
 	await shot('04-create-form-empty');

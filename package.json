@@ -1,7 +1,7 @@
 {
   "name": "dsh-mcp-bar",
   "version": "0.1.0",
-  "description": "DeepSeek Harness MCP 管理插件：输入框上方的 MCP 状态栏 + 完整的服务器管理面板。表单 / JSON 添加，启停、编辑、删除、连接测试与工具查看，配置持久化并接管 profile 中的原生 mcp-client 条目。",
+  "description": "DeepSeek Harness MCP 管理插件：侧边栏完整的服务器管理面板。表单 / JSON 添加，启停、编辑、删除、连接测试与工具查看，配置持久化并接管 profile 中的原生 mcp-client 条目。",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
