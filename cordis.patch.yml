@@ -1,0 +1,10 @@
+# MCP Bar 插件（DSH Bundle patch）
+# 作为 bundle 被合入 profile 时，自动插入本插件行。
+- insert:
+    - id: mcp-bar
+      name: 'dsh-mcp-bar'
+      config:
+        # 本插件托管的 mcp-client 条目 id 前缀，避免与 profile 中原生条目冲突。
+        entryPrefix: 'mcp-bar'
+        # 连接探测（initialize + tools/list）超时。
+        probeTimeoutMs: 20000
