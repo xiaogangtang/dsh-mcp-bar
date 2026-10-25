@@ -16,7 +16,7 @@ MCP Bar 是独立插件，不依赖 `dsh-mcp-connector`。两者同时管理同�
 
 ## 安装
 
-要求 DeepSeek Harness 0.2.x 与 Node.js 20+。
+要求 DeepSeek Harness 0.2.x 与 Node.js 20+。clone 后无需执行 `npm install` 即可安装运行：运行期用到的 `zod` 会回退到宿主 `@deepseek-ai/dsh-storage-domain` 自带的版本；只有开发（跑单测、`dev:ui`）时才需要 `npm install`。
 
 ```bash
 # 在 DSH 里为某个 profile 安装（把路径换成插件目录）
