@@ -15,10 +15,14 @@ MCP Bar 是独立插件，不依赖 `dsh-mcp-connector`。两者同时管理同�
 
 ## 安装
 
-要求 DeepSeek Harness 0.2.x 与 Node.js 20+。clone 后无需执行 `npm install` 即可安装运行：运行期用到的 `zod` 会回退到宿主 `@deepseek-ai/dsh-storage-domain` 自带的版本；只有开发（跑单测、`dev:ui`）时才需要 `npm install`。
+要求 DeepSeek Harness 0.2.x 与 Node.js 20+。
 
 ```bash
-# 在 DSH 里为某个 profile 安装（把路径换成插件目录）
+# 方式一：从 npm 安装（发布后）
+dsh plugin --profile <profile> add dsh-mcp-bar
+
+# 方式二：从本地目录安装（clone 后无需执行 npm install：
+# 运行期用到的 zod 会回退到宿主 @deepseek-ai/dsh-storage-domain 自带的版本）
 dsh plugin --profile <profile> add /path/to/dsh-mcp-bar
 
 # 或者直接编辑 profile 的 package.json，把 dsh-mcp-bar 加进 bundles
@@ -112,6 +116,17 @@ test/              node:test 单元测试
 ```
 
 浏览器半区没有构建步骤：`lib/client.js` 是包在 `window.__ModuleLoader__.load(...)` 里的 CommonJS 工厂，直接用 `require("react")` 和 `React.createElement`。改完刷新页面即可。
+
+## 发布
+
+维护者发布到 npm（包名 `dsh-mcp-bar`）：
+
+1. 按 semver 更新 `package.json` 的 `version` 并提交。
+2. `npm login` 登录维护者账号；账号开了 2FA 时准备一次性验证码。
+3. `npm publish`。`prepublishOnly` 会先自动跑 `npm run check`；`files` 白名单保证只发布 `lib/`、`cordis.patch.yml`、README 与 LICENSE。
+4. `npm view dsh-mcp-bar version` 确认已生效。
+
+发错的版本 72 小时内可 `npm unpublish dsh-mcp-bar@<version>` 撤回，之后只能 `npm deprecate`。
 
 ## 已知限制
 

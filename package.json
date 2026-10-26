@@ -19,7 +19,8 @@
     "test": "node --test test/*.test.js",
     "lint": "node --check lib/args.js && node --check lib/index.js && node --check lib/client.js && node --check lib/web.js && node --check lib/store.js && node --check lib/record.js && node --check lib/json-import.js && node --check lib/probe.js && node --check lib/provision.js && node --check lib/native.js && node --check scripts/ui-harness.mjs && node --check scripts/harness/harness.js && node --check scripts/harness/mock-api.js",
     "dev:ui": "node scripts/ui-harness.mjs",
-    "check": "npm run lint && npm test"
+    "check": "npm run lint && npm test",
+    "prepublishOnly": "npm run check"
   },
   "keywords": [
     "deepseek-harness",
@@ -35,6 +36,15 @@
     "plugin"
   ],
   "license": "MIT",
+  "author": "tangxiaogang",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaogangtang/dsh-mcp-bar.git"
+  },
+  "homepage": "https://github.com/xiaogangtang/dsh-mcp-bar#readme",
+  "bugs": {
+    "url": "https://github.com/xiaogangtang/dsh-mcp-bar/issues"
+  },
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
